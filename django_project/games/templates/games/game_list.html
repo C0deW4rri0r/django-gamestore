@@ -1,0 +1,26 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Игры{% endblock %}
+
+{% block content %}
+<h1>Список игр</h1>
+
+<div class="games-grid">
+    {% for game in games %}
+        <div class="game-card">
+            {% if game.game_image %}
+                <img src="{{ game.game_image.url }}" alt="{{ game.game_name }}">
+            {% endif %}
+
+            <h3>{{ game.game_name }}</h3>
+            <p>{{ game.game_description|truncatewords:15 }}</p>
+
+            <p><strong>Цена:</strong> {{ game.game_price }} ₽</p>
+
+            <a href="#" class="btn">Подробнее</a>
+        </div>
+    {% empty %}
+        <p>Пока нет игр</p>
+    {% endfor %}
+</div>
+{% endblock %}
