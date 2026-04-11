@@ -6,7 +6,7 @@
             <a href="{% url 'game_list' %}">Игры</a>
 
             {% if user.is_authenticated %}
-                <a href="#">Добавить игру</a>
+                <a href="{% url 'game_create' %}">Добавить игру</a>
                 <span>Привет, {{ user.username }}</span>
                 <a href="#">Выйти</a>
             {% else %}

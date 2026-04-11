@@ -1,0 +1,18 @@
+{% extends 'games/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn">Сохранить</button>
+</form>
+
+<br>
+<a href="{% url 'game_list' %}">← Назад</a>
+{% endblock %}
