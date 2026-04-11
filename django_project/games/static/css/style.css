@@ -61,3 +61,13 @@ body {
     text-decoration: none;
     border-radius: 5px;
 }
+
+.game-detail img {
+    width: 300px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.btn.danger {
+    background: #dc3545;
+}
