@@ -1,0 +1,17 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Удаление{% endblock %}
+
+{% block content %}
+<h1>Удаление игры</h1>
+
+<p>Вы уверены, что хотите удалить "{{ game.name }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn danger">Да, удалить</button>
+</form>
+
+<br>
+<a href="{% url 'game_detail' game.pk %}">Отмена</a>
+{% endblock %}
