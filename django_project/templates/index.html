@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block title %}Главная - магазин видеоигр{% endblock %}
+
+{% block content %}
+    <h1>Каталог игр</h1>
+
+    <div class="game-list">
+        {% for game in games %}
+            <div class="game-card">
+                <h3>{{ game.name }}</h3>
+                <p>Жанр: {{ game.genre.name }}</p>
+                <p><strong>Цена: {{ game.price }} руб.</strong></p>
+                <a href="#">Подробнее</a>
+            </div>
+        {% empty %}
+            <p>К сожалению, игр пока нет в наличии</p>
+        {% endfor %}
+    </div>
+{% endblock %}
