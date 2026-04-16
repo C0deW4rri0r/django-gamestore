@@ -2,12 +2,30 @@ services:
   web:
     build: .
     container_name: gamestore_web
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn django_project.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - .:/app
-      - ./data:/app/data
-      - ./media:/app/media
+      - sqlite_data:/app/data
+      - media_volume:/app/media
+      - static_volume:/app/staticfiles
     env_file:
       - .env
+
+  nginx:
+    image: nginx:alpine
+    container_name: gamestore_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - media_volume:/app/media
+      - static_volume:/app/staticfiles
+    depends_on:
+      - web
+
+volumes:
+  sqlite_data:
+  media_volume:
+  static_volume:
