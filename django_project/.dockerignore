@@ -1,0 +1,14 @@
+.venv
+venv
+django_game_store
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+data/db.sqlite3
+media
+staticfiles
+.git
+.gitignore
+.env
