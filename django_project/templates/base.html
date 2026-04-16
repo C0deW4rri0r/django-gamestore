@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GameShop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% end block %}
+</head>
+<body>
+    <div class="wrapper">
+        <aside class="sidebar">
+            <h2>Каталог</h2>
+            <ul>
+                <li><a href="/">Все игры</a></li>
+                <li><a href="#">Экшн</a></li>
+                <li><a href="#">РПГ</a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+   
+</body>
+</html>
