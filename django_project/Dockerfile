@@ -6,12 +6,9 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN mkdir -p /app/data /app/media /app/staticfiles
-
-EXPOSE 8000
+RUN mkdir -p /app/persistent/data /app/persistent/media /app/staticfiles
