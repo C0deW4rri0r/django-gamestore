@@ -33,6 +33,11 @@
         <a href="{% url 'game_delete' game.pk %}" class="btn danger">Удалить</a>
     {% endif %}
 
+    <form method="post" action="{% url 'add_to_cart' game.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Добавить в корзину</button>
+    </form>
+
     <br><br>
     <a href="{% url 'game_list' %}">← Назад к списку</a>
 
