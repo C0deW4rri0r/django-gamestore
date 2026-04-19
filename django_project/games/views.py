@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import GameForm
 from .models import Game
-from .cart import add_to_cart as add_game_to_cart
+from .cart import add_to_cart as add_game_to_cart, get_cart
+from .cart import remove_from_cart as remove_game_from_cart, clear_cart as clear_game_cart
 
 def game_list(request):
     games = Game.objects.all()
@@ -71,3 +72,36 @@ def add_to_cart_view(request, pk):
         messages.success(request, f'Игра "{game.name}" добавлена в корзину.')
 
     return redirect('game_detail', pk=game.pk)
+
+def cart_detail(request):
+    cart_ids = get_cart(request)
+    games = Game.objects.filter(id__in=cart_ids)
+    total_price = sum(game.price for game in games)
+
+    return render(request, 'games/cart_detail.html', {
+        'games': games,
+        'total_price': total_price,
+    })
+
+def remove_from_cart_view(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+
+    if request.method == 'POST':
+        remove_game_from_cart(request, game.id)
+        messages.success(request, f'Игра "{game.name}" удалена из корзины.')
+
+    return redirect('cart_detail')
+
+def checkout_cart_view(request):
+    if request.method == 'POST':
+        cart_ids = get_cart(request)
+
+        if not cart_ids:
+            messages.warning(request, 'Корзина пуста. Нечего оформлять.')
+            return redirect('cart_detail')
+        
+        clear_game_cart(request)
+        messages.success(request, 'Покупка успешно оформлена.')
+        return redirect('cart_detail')
+    
+    return redirect('cart_detail')

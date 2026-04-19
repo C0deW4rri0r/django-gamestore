@@ -1,0 +1,39 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+    <h1>Корзина</h1>
+
+    {% if games %}
+        <div class="games-grid">
+            {% for game in games %}
+                <div class="game-card">
+                    {% if game.image %}
+                        <img src="{{ game.image.url }}" alt="{{ game.name }}">
+                    {% endif %}
+
+                    <h3>{{ game.name }}</h3>
+                    <p>{{ game.description|truncatewords:15 }}</p>
+                    <p><strong>Цена:</strong> {{ game.price }} ₽</p>
+
+                    <form method="post" action="{% url 'remove_from_cart' game.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn danger">Удалить из корзины</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+        <p><strong>Итоговая сумма:</strong> {{ total_price }} ₽</p>
+
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn">Оплатить</button>
+        </form>
+        
+    {% else %}
+        <p>Корзина пуста.</p>
+    {% endif %}
+{% endblock %}

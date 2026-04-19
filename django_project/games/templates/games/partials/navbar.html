@@ -5,6 +5,8 @@
         <div class="nav-links">
             <a href="{% url 'game_list' %}">Игры</a>
 
+            <a href="{% url 'cart_detail' %}">Корзина</a>
+
             {% if user.is_authenticated %}
                 <a href="{% url 'game_create' %}">Добавить игру</a>
                 <span>Привет, {{ user.username }}</span>
