@@ -115,3 +115,11 @@ body {
     border-radius: 10px;
     margin-bottom: 15px;
 }
+
+#loading-indicator {
+    margin: 15px 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #f3f3f3;
+    font-weight: 600;
+}

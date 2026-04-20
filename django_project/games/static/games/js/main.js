@@ -1,27 +1,30 @@
+//modal window
 const modal = document.getElementById('game-modal');
 const quickViewButtons = document.querySelectorAll('.quick-view-btn');
 const closeModalButton = document.getElementById('modal-close-btn');
 const modalOverlay = document.querySelector('.modal-overlay');
 
-quickViewButtons.forEach(button => {
-    button.addEventListener('click', async () => {
-        const gameId = button.dataset.gameId;
+document.addEventListener('click', async (event) => {
+    const quickViewButton = event.target.closest('.quick-view-btn');
 
-        try {
-            const response = await fetch(`/games/${gameId}/modal-data/`);
+    if (!quickViewButton) return;
 
-            if (!response.ok) {
-                throw new Error('Не удалось загрузить данные игры');
-            }
+    const gameId = quickViewButton.dataset.gameId;
 
-            const data = await response.json();
-            fillModal(data);
-            modal.classList.remove('hidden');
-        } catch (error) {
-            console.error(error);
-            alert('Не удалось открыть модальное окно. Попробуйте ещё раз.');
+    try {
+        const response = await fetch(`/games/${gameId}/modal-data/`);
+
+        if (!response.ok) {
+            throw new Error('Не удалось загрузить данные игры');
         }
-    });
+
+        const data = await response.json();
+        fillModal(data);
+        modal.classList.remove('hidden');
+    } catch (error) {
+        console.error(error);
+        alert('Не удалось открыть модальное окно. Попробуйте ещё раз.');
+    }
 });
 
 closeModalButton.addEventListener('click', () => {
@@ -57,4 +60,68 @@ function fillModal(data) {
         modalGameImage.alt = '';
         modalGameImage.style.display = 'none';
     }
+}
+
+//filtration
+const searchInput = document.getElementById('search-input');
+const genreFilter = document.getElementById('genre-filter');
+const loadingIndicator = document.getElementById('loading-indicator');
+const gamesListContainer = document.getElementById('games-list-container');
+
+async function loadFilteredGames() {
+    if (!gamesListContainer) return;
+
+    const filterUrl = gamesListContainer.dataset.filterUrl;
+    const searchValue = searchInput ? searchInput.value.trim() : '';
+    const genreValue = genreFilter ? genreFilter.value : '';
+
+    const params = new URLSearchParams();
+
+    if (searchValue) {
+        params.append('search', searchValue);
+    }
+
+    if (genreValue) {
+        params.append('genre', genreValue);
+    }
+
+    loadingIndicator.classList.remove('hidden');
+
+    try {
+        const response = await fetch(`${filterUrl}?${params.toString()}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Не удалось загрузить список игр');
+        }
+
+        const html = await response.text();
+        gamesListContainer.innerHTML = html;
+    } catch (error) {
+        console.error(error);
+        gamesListContainer.innerHTML = '<p>Произошла ошибка при загрузке игр.</p>';
+    } finally {
+        loadingIndicator.classList.add('hidden');
+    }
+}
+
+let searchTimeout;
+
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+
+        searchTimeout = setTimeout(() => {
+            loadFilteredGames();
+        }, 300);
+    });
+}
+
+if (genreFilter) {
+    genreFilter.addEventListener('change', () => {
+        loadFilteredGames();
+    });
 }

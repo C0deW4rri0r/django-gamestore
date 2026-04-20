@@ -20,7 +20,7 @@
         Загрузка...
     </div>
 
-    <div id="games-list-container">
+    <div id="games-list-container" data-filter-url="{% url 'game_filter' %}">
         {% include 'games/partials/game_cards.html' %}
     </div>
 
