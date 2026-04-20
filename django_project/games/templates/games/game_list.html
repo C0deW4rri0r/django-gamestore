@@ -18,9 +18,37 @@
             <p><strong>Цена:</strong> {{ game.price }} ₽</p>
 
             <a href="{% url 'game_detail' game.pk %}" class="btn">Подробнее</a>
+
+            <button type="button" class="btn quick-view-btn" data-game-id="{{ game.id }}">
+                Быстрый просмотр
+            </button>
         </div>
     {% empty %}
         <p>Пока нет игр</p>
     {% endfor %}
+
+    <div id="game-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+
+        <div class="modal-content">
+            <button type="button" id="modal-close-btn" class="modal-close-btn">
+                x
+            </button>
+
+            <div class="modal-body">
+                <img id="modal-game-image" src="" alt="" class="modal-game-image">
+
+                <h2 id="modal-game-name"></h2>
+
+                <p><strong>Разработчик:</strong> <span id="modal-game-developer"></span></p>
+                <p><strong>Дата выхода:</strong> <span id="modal-game-release-date"></span></p>
+                <p><strong>Жанры:</strong> <span id="modal-game-genres"></span></p>
+                <p><strong>Цена:</strong> <span id="modal-game-price"></span> ₽</p>
+
+                <p id="modal-game-description"></p>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

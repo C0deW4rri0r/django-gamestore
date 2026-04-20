@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 from .forms import GameForm
 from .models import Game
 from .cart import add_to_cart as add_game_to_cart, get_cart
@@ -105,3 +106,19 @@ def checkout_cart_view(request):
         return redirect('cart_detail')
     
     return redirect('cart_detail')
+
+def game_modal_data(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+
+    data = {
+        'id': game.id,
+        'name': game.name,
+        'description': game.description,
+        'price': str(game.price),
+        'developer': game.developer,
+        'release_date': game.release_date.strftime('%d.%m.%Y') if game.release_date else '',
+        'genres': list(game.genres.values_list('name', flat=True)),
+        'image_url': game.image.url if game.image else '',
+    }
+
+    return JsonResponse(data)

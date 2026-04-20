@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import game_list, game_detail, game_create, game_update, game_delete
 from .views import add_to_cart_view, cart_detail, remove_from_cart_view, checkout_cart_view
+from .views import game_modal_data
 
 urlpatterns = [
     path('', game_list, name='game_list'),
@@ -12,4 +13,5 @@ urlpatterns = [
     path('cart/', cart_detail, name='cart_detail'),
     path('<int:pk>/remove-from-cart/', remove_from_cart_view, name='remove_from_cart'),
     path('cart/checkout/', checkout_cart_view, name='checkout'),
+    path('<int:pk>/modal-data/', game_modal_data, name='game_modal_data'),
 ]
