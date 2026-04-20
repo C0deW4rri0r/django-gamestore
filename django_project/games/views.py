@@ -3,15 +3,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from .forms import GameForm
-from .models import Game
+from .models import Game, Genre
 from .cart import add_to_cart as add_game_to_cart, get_cart
 from .cart import remove_from_cart as remove_game_from_cart, clear_cart as clear_game_cart
 
 def game_list(request):
     games = Game.objects.all()
+    genres = Genre.objects.all()
 
     return render(request, 'games/game_list.html', {
-        'games': games
+        'games': games,
+        'genres': genres,
     })
 
 def game_detail(request, pk):
@@ -122,3 +124,21 @@ def game_modal_data(request, pk):
     }
 
     return JsonResponse(data)
+
+def game_filter(request):
+    search_query = request.GET.get('search', '').strip()
+    genre_id = request.GET.get('genre', '').strip()
+
+    games = Game.objects.all()
+
+    if search_query:
+        games = games.filter(name__icontains=search_query)
+
+    if genre_id:
+        games = games.filter(genres__id=genre_id)
+
+    games = games.distinct()
+
+    return render(request, 'games/partials/game_cards.html', {
+        'games': games,
+    })

@@ -1,0 +1,22 @@
+<div class="games-grid">
+    {% for game in games %}
+        <div class="game-card">
+            {% if game.image %}
+                <img src="{{ game.image.url }}" alt="{{ game.name }}">
+            {% endif %}
+
+            <h3>{{ game.name }}</h3>
+            <p>{{ game.description|truncatewords:15 }}</p>
+
+            <p><strong>Цена:</strong> {{ game.price }} ₽</p>
+
+            <a href="{% url 'game_detail' game.pk %}" class="btn">Подробнее</a>
+
+            <button type="button" class="btn quick-view-btn" data-game-id="{{ game.id }}">
+                Быстрый просмотр
+            </button>
+        </div>
+    {% empty %}
+        <p>Пока нет игр</p>
+    {% endfor %}
+</div>

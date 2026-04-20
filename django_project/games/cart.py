@@ -28,3 +28,6 @@ def remove_from_cart(request, game_id):
 
 def clear_cart(request):
     save_cart(request, [])
+
+def get_cart_count(request):
+    return len(get_cart(request))
