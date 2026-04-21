@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from .forms import GameForm
 from .models import Game, Genre
-from .cart import add_to_cart as add_game_to_cart, get_cart
+from .cart import add_to_cart as add_game_to_cart, get_cart, get_cart_count
 from .cart import remove_from_cart as remove_game_from_cart, clear_cart as clear_game_cart
 
 def game_list(request):
@@ -72,7 +72,18 @@ def add_to_cart_view(request, pk):
 
     if request.method == 'POST':
         add_game_to_cart(request, game.id)
-        messages.success(request, f'Игра "{game.name}" добавлена в корзину.')
+
+        message = f'Игра "{game.name}" добавлена в корзину.'
+        cart_items_count = get_cart_count(request)
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': True,
+                'message': message,
+                'cart_items_count': cart_items_count,
+            })
+
+        messages.success(request, message)
 
     return redirect('game_detail', pk=game.pk)
 

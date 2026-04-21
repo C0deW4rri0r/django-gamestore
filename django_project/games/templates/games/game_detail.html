@@ -8,7 +8,7 @@
     <h1>{{ game.name }}</h1>
 
     {% if game.image %}
-        <img src="{{ game.image.url }}" alt="{{ game.name }}">
+        <img src="{{ game.image.url }}" alt="{{ game.name }}" class="game-detail-image">
     {% endif %}
 
     <p><strong>Описание:</strong></p>
@@ -33,9 +33,12 @@
         <a href="{% url 'game_delete' game.pk %}" class="btn danger">Удалить</a>
     {% endif %}
 
-    <form method="post" action="{% url 'add_to_cart' game.pk %}">
+    <form method="post" action="{% url 'add_to_cart' game.pk %}" class="add-to-cart-form"
+        data-game-id="{{ game.id }}">
         {% csrf_token %}
-        <button type="submit" class="btn">Добавить в корзину</button>
+        <button type="submit" class="btn add-to-cart-btn">
+            Добавить в корзину
+        </button>
     </form>
 
     <br><br>

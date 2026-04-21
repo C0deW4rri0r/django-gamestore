@@ -5,11 +5,13 @@
         <div class="nav-links">
             <a href="{% url 'game_list' %}">Игры</a>
 
-            <a href="{% url 'cart_detail' %}">
+            <a href="{% url 'cart_detail' %}" id="cart-link">
                 Корзина
-                {% if cart_items_count %}
-                    ({{ cart_items_count }})
-                {% endif %}
+                <span id="cart-counter">
+                    {% if cart_items_count %}
+                        {{ cart_items_count }}
+                    {% endif %}
+                </span>
             </a>
 
             {% if user.is_authenticated %}
