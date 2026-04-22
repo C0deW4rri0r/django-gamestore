@@ -3,15 +3,18 @@
 {% block title %}Удаление{% endblock %}
 
 {% block content %}
-<h1>Удаление игры</h1>
+<div class="page-card page-card-narrow">
+    <h1>Удаление игры</h1>
 
-<p>Вы уверены, что хотите удалить "{{ game.name }}"?</p>
+    <p>Вы уверены, что хотите удалить "{{ game.name }}"?</p>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn danger">Да, удалить</button>
-</form>
+    <form method="post" class="app-form">
+        {% csrf_token %}
 
-<br>
-<a href="{% url 'game_detail' game.pk %}">Отмена</a>
+        <div class="form-actions">
+            <button type="submit" class="btn danger">Да, удалить</button>
+            <a href="{% url 'game_detail' game.pk %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

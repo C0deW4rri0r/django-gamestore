@@ -3,16 +3,17 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1>{{ title }}</h1>
+<div class="page-card page-card-form">
+    <h1>{{ title }}</h1>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" class="app-form">
+        {% csrf_token %}
+        {{ form.as_p }}
 
-    {{ form.as_p }}
-
-    <button type="submit" class="btn">Сохранить</button>
-</form>
-
-<br>
-<a href="{% url 'game_list' %}">← Назад</a>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <a href="{% url 'game_list' %}" class="btn btn-secondary">Назад</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

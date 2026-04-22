@@ -6,34 +6,21 @@
     <h1>Корзина</h1>
 
     {% if games %}
-        <div class="games-grid">
-            {% for game in games %}
-                <div class="game-card">
-                    {% if game.image %}
-                        <img src="{{ game.image.url }}" alt="{{ game.name }}">
-                    {% endif %}
-
-                    <h3>{{ game.name }}</h3>
-                    <p>{{ game.description|truncatewords:15 }}</p>
-                    <p><strong>Цена:</strong> {{ game.price }} ₽</p>
-
-                    <form method="post" action="{% url 'remove_from_cart' game.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn danger">Удалить из корзины</button>
-                    </form>
-                </div>
-            {% endfor %}
+        <div id="games-list-container">
+            {% include 'games/partials/game_cards.html' %}
         </div>
 
-        <hr>
-        <p><strong>Итоговая сумма:</strong> {{ total_price }} ₽</p>
+        <div class="cart-summary">
+            <p><strong>Итоговая сумма:</strong> {{ total_price }} ₽</p>
 
-        <form method="post" action="{% url 'checkout' %}">
-            {% csrf_token %}
-            <button type="submit" class="btn">Оплатить</button>
-        </form>
-        
+            <form method="post" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Оплатить</button>
+            </form>
+        </div>
     {% else %}
-        <p>Корзина пуста.</p>
+        <div class="page-card page-card-narrow">
+            <p>Корзина пуста.</p>
+        </div>
     {% endif %}
 {% endblock %}

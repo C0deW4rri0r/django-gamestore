@@ -19,9 +19,11 @@ def game_list(request):
 
 def game_detail(request, pk):
     game = get_object_or_404(Game, pk=pk)
+    back_url = request.GET.get('next') or reverse('game_list')
 
     return render(request, 'games/game_detail.html', {
-        'game': game
+        'game': game,
+        'back_url': back_url,
     })
 
 @login_required

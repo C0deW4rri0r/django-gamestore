@@ -8,7 +8,7 @@ const modalGameDetailLink = document.getElementById('modal-game-detail-link');
 document.addEventListener('click', async (event) => {
     const quickViewButton = event.target.closest('.quick-view-btn');
 
-    if (!quickViewButton) return;
+    if (!quickViewButton || !modal) return;
 
     const gameId = quickViewButton.dataset.gameId;
 
@@ -197,6 +197,16 @@ addToCartForms.forEach(form => {
 //flying image
 const cartLink = document.getElementById('cart-link');
 
+function getFlyTarget() {
+    const isMobile = window.innerWidth <= 900;
+
+    if (isMobile && navToggle) {
+        return navToggle;
+    }
+
+    return cartLink;
+}
+
 function lerp(start, end, t) {
     return start + (end - start) * t;
 }
@@ -220,14 +230,16 @@ function getQuadraticBezierPoint(p0, p1, p2, t) {
 }
 
 function animateFlyToCart(sourceElement) {
+    const targetElement = getFlyTarget();
+
     return new Promise((resolve) => {
-        if (!sourceElement || !cartLink) {
+        if (!sourceElement || !targetElement) {
             resolve();
             return;
         }
 
         const sourceRect = sourceElement.getBoundingClientRect();
-        const targetRect = cartLink.getBoundingClientRect();
+        const targetRect = targetElement.getBoundingClientRect();
 
         const flyingImage = sourceElement.cloneNode(true);
         flyingImage.classList.add('flying-image');
@@ -267,10 +279,22 @@ function animateFlyToCart(sourceElement) {
         const p2 = { x: endX, y: endY };
 
         const arcHeight = 120
-        const p1 = {
-            x: lerp(startX, endX, 0.5),
-            y: Math.min(startY, endY) - arcHeight
-        };
+
+        const isMobile = window.innerWidth <= 640;
+
+        let p1;
+
+        if (isMobile) {
+            p1 = {
+                x: Math.min(window.innerWidth - 40, lerp(startX, endX, 0.7)),
+                y: lerp(startY, endY, 0.35)
+            };
+        } else {
+            p1 = {
+                x: lerp(startX, endX, 0.5),
+                y: Math.min(startY, endY) - arcHeight
+            };
+        }
 
         const duration = 850;
         const startTime = performance.now();

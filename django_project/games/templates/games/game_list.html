@@ -23,29 +23,5 @@
     <div id="games-list-container" data-filter-url="{% url 'game_filter' %}">
         {% include 'games/partials/game_cards.html' %}
     </div>
-
-    <div id="game-modal" class="modal hidden">
-        <div class="modal-overlay"></div>
-
-        <div class="modal-content">
-            <button type="button" id="modal-close-btn" class="modal-close-btn">
-                x
-            </button>
-
-            <div class="modal-body">
-                <img id="modal-game-image" src="" alt="" class="modal-game-image">
-
-                <h2 id="modal-game-name"></h2>
-
-                <p><strong>Разработчик:</strong> <span id="modal-game-developer"></span></p>
-                <p><strong>Дата выхода:</strong> <span id="modal-game-release-date"></span></p>
-                <p><strong>Жанры:</strong> <span id="modal-game-genres"></span></p>
-                <p><strong>Цена:</strong> <span id="modal-game-price"></span> ₽</p>
-
-                <p id="modal-game-description"></p>
-
-                <a id="modal-game-detail-link" class="btn" href="#">Открыть страницу игры</a>
-            </div>
-        </div>
-    </div>
+    
 {% endblock %}
