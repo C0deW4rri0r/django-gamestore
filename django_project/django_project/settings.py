@@ -133,7 +133,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = PERSISTENT_DIR / 'media'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/games/'
