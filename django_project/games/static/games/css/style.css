@@ -19,6 +19,26 @@ body {
     text-decoration: none;
 }
 
+.logout-form {
+    display: inline;
+    margin: 0;
+}
+
+.nav-link-button {
+    background: none;
+    border: none;
+    color: white;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+.nav-link-button:hover {
+    opacity: 0.85;
+}
+
 .message {
     padding: 10px;
     margin-bottom: 10px;
@@ -159,4 +179,78 @@ body {
     will-change: transform, opacity, left, top;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
     filter: saturate(1.05);
+}
+
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 32px;
+    line-height: 1.2;
+}
+
+.auth-subtitle {
+    margin-bottom: 24px;
+    color: #6b7280;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.btn-large {
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.auth-submit {
+    width: 100%;
 }

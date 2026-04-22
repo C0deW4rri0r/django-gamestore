@@ -3,6 +3,7 @@ const modal = document.getElementById('game-modal');
 const quickViewButtons = document.querySelectorAll('.quick-view-btn');
 const closeModalButton = document.getElementById('modal-close-btn');
 const modalOverlay = document.querySelector('.modal-overlay');
+const modalGameDetailLink = document.getElementById('modal-game-detail-link');
 
 document.addEventListener('click', async (event) => {
     const quickViewButton = event.target.closest('.quick-view-btn');
@@ -63,6 +64,10 @@ function fillModal(data) {
         modalGameImage.src = '';
         modalGameImage.alt = '';
         modalGameImage.style.display = 'none';
+    }
+    
+    if (modalGameDetailLink) {
+        modalGameDetailLink.href = data.detail_url;
     }
 }
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.urls import reverse
 from .forms import GameForm
 from .models import Game, Genre
 from .cart import add_to_cart as add_game_to_cart, get_cart, get_cart_count
@@ -132,6 +133,7 @@ def game_modal_data(request, pk):
         'release_date': game.release_date.strftime('%d.%m.%Y') if game.release_date else '',
         'genres': list(game.genres.values_list('name', flat=True)),
         'image_url': game.image.url if game.image else '',
+        'detail_url': reverse('game_detail', args=[game.id]),
     }
 
     return JsonResponse(data)
