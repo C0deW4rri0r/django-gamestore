@@ -1,0 +1,28 @@
+services:
+  web:
+    image: gamestore_web:latest
+    container_name: gamestore_web
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn django_project.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - ./data:/app/data
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
+    env_file:
+      - .env
+
+  nginx:
+    image: nginx:alpine
+    container_name: gamestore_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
+    depends_on:
+      - web
