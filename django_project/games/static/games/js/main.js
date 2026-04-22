@@ -13,7 +13,8 @@ document.addEventListener('click', async (event) => {
     const gameId = quickViewButton.dataset.gameId;
 
     try {
-        const response = await fetch(`/games/${gameId}/modal-data/`);
+        const currentPath = encodeURIComponent(window.location.pathname + window.location.search);
+        const response = await fetch(`/games/${gameId}/modal-data/?current_path=${currentPath}`);
 
         if (!response.ok) {
             throw new Error('Не удалось загрузить данные игры');

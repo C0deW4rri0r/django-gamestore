@@ -126,6 +126,12 @@ def checkout_cart_view(request):
 def game_modal_data(request, pk):
     game = get_object_or_404(Game, pk=pk)
 
+    current_path = request.GET.get('current_path', '')
+    detail_url = reverse('game_detail', args=[game.id])
+
+    if current_path:
+        detail_url = f'{detail_url}?next={current_path}'
+
     data = {
         'id': game.id,
         'name': game.name,
@@ -135,7 +141,7 @@ def game_modal_data(request, pk):
         'release_date': game.release_date.strftime('%d.%m.%Y') if game.release_date else '',
         'genres': list(game.genres.values_list('name', flat=True)),
         'image_url': game.image.url if game.image else '',
-        'detail_url': reverse('game_detail', args=[game.id]),
+        'detail_url': detail_url,
     }
 
     return JsonResponse(data)
