@@ -1,0 +1,26 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+    <h1>Корзина</h1>
+
+    {% if games %}
+        <div id="games-list-container">
+            {% include 'games/partials/game_cards.html' with games=games show_remove_from_cart=True %}
+        </div>
+
+        <div class="cart-summary">
+            <p><strong>Итоговая сумма:</strong> {{ total_price }} ₽</p>
+
+            <form method="post" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Оплатить</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="page-card page-card-narrow">
+            <p>Корзина пуста.</p>
+        </div>
+    {% endif %}
+{% endblock %}

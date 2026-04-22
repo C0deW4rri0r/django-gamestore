@@ -32,8 +32,9 @@
         {% endblock %}
     </main>
 
+    {% include 'games/partials/game_modal.html' %}
+
     <script src="{% static 'games/js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
-
 </body>
 </html>

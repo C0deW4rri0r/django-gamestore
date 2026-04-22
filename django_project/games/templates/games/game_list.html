@@ -3,24 +3,25 @@
 {% block title %}Игры{% endblock %}
 
 {% block content %}
-<h1>Список игр</h1>
+    <h1>Список игр</h1>
 
-<div class="games-grid">
-    {% for game in games %}
-        <div class="game-card">
-            {% if game.image %}
-                <img src="{{ game.image.url }}" alt="{{ game.name }}">
-            {% endif %}
+    <div class="filters">
+        <input type="text" id="search-input" placeholder="Поиск по названию...">
 
-            <h3>{{ game.name }}</h3>
-            <p>{{ game.description|truncatewords:15 }}</p>
+        <select id="genre-filter">
+            <option value="">Все жанры</option>
+            {% for genre in genres %}
+                <option value="{{ genre.id }}">{{ genre.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-            <p><strong>Цена:</strong> {{ game.price }} ₽</p>
+    <div id="loading-indicator" class="hidden">
+        Загрузка...
+    </div>
 
-            <a href="{% url 'game_detail' game.pk %}" class="btn">Подробнее</a>
-        </div>
-    {% empty %}
-        <p>Пока нет игр</p>
-    {% endfor %}
-</div>
+    <div id="games-list-container" data-filter-url="{% url 'game_filter' %}">
+        {% include 'games/partials/game_cards.html' %}
+    </div>
+    
 {% endblock %}

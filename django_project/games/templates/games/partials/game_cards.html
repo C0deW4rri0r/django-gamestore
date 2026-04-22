@@ -1,0 +1,40 @@
+<div class="games-grid">
+    {% for game in games %}
+        <article class="game-card">
+            <div class="game-card-media">
+                {% if game.image %}
+                    <img src="{{ game.image.url }}" alt="{{ game.name }}" class="game-card-image">
+                {% else %}
+                    <div class="game-card-image-placeholder">Нет изображения</div>
+                {% endif %}
+            </div>
+
+            <div class="game-card-content">
+                <h3>{{ game.name }}</h3>
+                <p class="game-card-description">{{ game.description|truncatewords:15 }}</p>
+
+                <p class="game-card-price"><strong>Цена:</strong> {{ game.price }} ₽</p>
+
+                <div class="game-card-actions">
+                    <a href="{% url 'game_detail' game.pk %}?next={{ request.get_full_path|urlencode }}" 
+                    class="btn btn-secondary">
+                        Подробнее
+                    </a>
+
+                    <button type="button" class="btn btn-primary quick-view-btn" data-game-id="{{ game.id }}">
+                        Быстрый просмотр
+                    </button>
+
+                    {% if show_remove_from_cart %}
+                        <form method="post" action="{% url 'remove_from_cart' game.pk %}" class="remove-from-cart-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn danger">Удалить из корзины</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+    {% empty %}
+        <p>Пока нет игр</p>
+    {% endfor %}
+</div>
