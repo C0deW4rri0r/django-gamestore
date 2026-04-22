@@ -232,14 +232,27 @@ function animateFlyToCart(sourceElement) {
         const flyingImage = sourceElement.cloneNode(true);
         flyingImage.classList.add('flying-image');
 
-        const startWidth = sourceRect.width;
-        const startHeight = sourceRect.height;
+        const maxCloneWidth = 180;
+        const scaleRatio = Math.min(1, maxCloneWidth / sourceRect.width);
 
-        const startX = sourceRect.left;
-        const startY = sourceRect.top;
+        const startWidth = sourceRect.width * scaleRatio;
+        const startHeight = sourceRect.height * scaleRatio;
 
-        const endX = targetRect.left - startWidth * 0.35;
-        const endY = targetRect.top - startHeight * 0.55;
+        const unclampedStartX = sourceRect.left + (sourceRect.width - startWidth) / 2;
+        const unclampedStartY = sourceRect.top + (sourceRect.height - startHeight) / 2;
+
+        const startX = Math.min(
+            window.innerWidth - startWidth - 16,
+            Math.max(16, unclampedStartX)
+        );
+
+        const startY = Math.min(
+            window.innerHeight - startHeight - 16,
+            Math.max(16, unclampedStartY)
+        );
+
+        const endX = targetRect.left - startWidth * 0.3;
+        const endY = targetRect.top - startHeight * 0.45;
 
         flyingImage.style.width = `${startWidth}px`;
         flyingImage.style.height = `${startHeight}px`;
@@ -269,8 +282,8 @@ function animateFlyToCart(sourceElement) {
 
             const point = getQuadraticBezierPoint(p0, p1, p2, t);
 
-            const scale = lerp(1, 0.32, t);
-            const rotate = lerp(0, 14, t);
+            const scale = lerp(1, 0.26, t);
+            const rotate = lerp(0, 8, t);
             const opacity = lerp(1, 0.9, t);
 
             flyingImage.style.left = `${point.x}px`;
