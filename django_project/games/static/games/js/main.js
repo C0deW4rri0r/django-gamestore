@@ -104,6 +104,9 @@ async function loadFilteredGames() {
 
         const html = await response.text();
         gamesListContainer.innerHTML = html;
+
+        initTiltCards();
+    
     } catch (error) {
         console.error(error);
         gamesListContainer.innerHTML = '<p>Произошла ошибка при загрузке игр.</p>';
@@ -189,6 +192,28 @@ addToCartForms.forEach(form => {
 //flying image
 const cartLink = document.getElementById('cart-link');
 
+function lerp(start, end, t) {
+    return start + (end - start) * t;
+}
+
+function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+}
+
+function getQuadraticBezierPoint(p0, p1, p2, t) {
+    const x =
+        Math.pow(1 - t, 2) * p0.x +
+        2 * (1 - t) * t * p1.x +
+        Math.pow(t, 2) * p2.x;
+
+    const y =
+        Math.pow(1 - t, 2) * p0.y +
+        2 * (1 - t) * t * p1.y +
+        Math.pow(t, 2) * p2.y;
+
+    return { x, y };
+}
+
 function animateFlyToCart(sourceElement) {
     return new Promise((resolve) => {
         if (!sourceElement || !cartLink) {
@@ -202,33 +227,105 @@ function animateFlyToCart(sourceElement) {
         const flyingImage = sourceElement.cloneNode(true);
         flyingImage.classList.add('flying-image');
 
-        flyingImage.style.left = `${sourceRect.left}px`;
-        flyingImage.style.top = `${sourceRect.top}px`;
-        flyingImage.style.width = `${sourceRect.width}px`;
-        flyingImage.style.height = `${sourceRect.height}px`;
+        const startWidth = sourceRect.width;
+        const startHeight = sourceRect.height;
+
+        const startX = sourceRect.left;
+        const startY = sourceRect.top;
+
+        const endX = targetRect.left - startWidth * 0.35;
+        const endY = targetRect.top - startHeight * 0.55;
+
+        flyingImage.style.width = `${startWidth}px`;
+        flyingImage.style.height = `${startHeight}px`;
+        flyingImage.style.left = `${startX}px`;
+        flyingImage.style.top = `${startY}px`;
         flyingImage.style.opacity = '1';
-        flyingImage.style.transform = 'translate(0, 0) scale(1)';
+        flyingImage.style.transform = 'translate(0, 0) scale(1) rotate(0deg)';
 
         document.body.appendChild(flyingImage);
 
-        const translateX =
-            targetRect.left + targetRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
-        const translateY =
-            targetRect.top + targetRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
+        const p0 = { x: startX, y: startY };
+        const p2 = { x: endX, y: endY };
 
-        flyingImage.getBoundingClientRect();
+        const arcHeight = 120
+        const p1 = {
+            x: lerp(startX, endX, 0.5),
+            y: Math.min(startY, endY) - arcHeight
+        };
 
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                flyingImage.style.transform =
-                    `translate(${translateX}px, ${translateY}px) scale(0.35)`;
-                flyingImage.style.opacity = '0.85';
-            });
-        });
+        const duration = 850;
+        const startTime = performance.now();
 
-        setTimeout(() => {
-            flyingImage.remove();
-            resolve();
-        }, 700);
+        function frame(now) {
+            const elapsed = now - startTime;
+            const rawT = Math.min(elapsed / duration, 1);
+            const t = easeOutCubic(rawT);
+
+            const point = getQuadraticBezierPoint(p0, p1, p2, t);
+
+            const scale = lerp(1, 0.32, t);
+            const rotate = lerp(0, 14, t);
+            const opacity = lerp(1, 0.9, t);
+
+            flyingImage.style.left = `${point.x}px`;
+            flyingImage.style.top = `${point.y}px`;
+            flyingImage.style.opacity = opacity;
+            flyingImage.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
+
+            if (rawT < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                flyingImage.remove();
+                resolve();
+            }
+        }
+
+        requestAnimationFrame(frame);
     });
 }
+
+//card tilt
+
+const gameCards = document.querySelectorAll('.game-card');
+
+function initTiltCards() {
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const cards = document.querySelectorAll('.game-card');
+
+    cards.forEach(card => {
+        if (card.dataset.tiltInitialized === 'true') return;
+
+        card.dataset.tiltInitialized = 'true';
+
+        card.addEventListener('mousemove', (event) => {
+            const rect = card.getBoundingClientRect();
+
+            const cardWidth = rect.width;
+            const cardHeight = rect.height;
+
+            const centerX = rect.left + cardWidth / 2;
+            const centerY = rect.top + cardHeight / 2;
+
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            const offsetX = mouseX - centerX;
+            const offsetY = mouseY - centerY;
+
+            const rotateY = (offsetX / (cardWidth / 2)) * 6;
+            const rotateX = -(offsetY / (cardHeight / 2)) * 6;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            card.classList.add('tilt-active');
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            card.classList.remove('tilt-active');
+        });
+    });
+}
+
+initTiltCards();
