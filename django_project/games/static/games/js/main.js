@@ -1,6 +1,5 @@
 //modal window
 const modal = document.getElementById('game-modal');
-const quickViewButtons = document.querySelectorAll('.quick-view-btn');
 const closeModalButton = document.getElementById('modal-close-btn');
 const modalOverlay = document.querySelector('.modal-overlay');
 const modalGameDetailLink = document.getElementById('modal-game-detail-link');
@@ -340,8 +339,6 @@ function animateFlyToCart(sourceElement) {
 }
 
 //card tilt
-
-const gameCards = document.querySelectorAll('.game-card');
 
 function initTiltCards() {
     if (window.matchMedia('(hover: none)').matches) return;
