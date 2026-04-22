@@ -7,7 +7,7 @@
 
     {% if games %}
         <div id="games-list-container">
-            {% include 'games/partials/game_cards.html' %}
+            {% include 'games/partials/game_cards.html' with games=games show_remove_from_cart=True %}
         </div>
 
         <div class="cart-summary">

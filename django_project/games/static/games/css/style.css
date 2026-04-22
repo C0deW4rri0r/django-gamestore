@@ -651,6 +651,15 @@ p {
     animation: cartLinkPop 0.28s ease;
 }
 
+.remove-from-cart-form {
+    margin: 0;
+    width: 100%;
+}
+
+.remove-from-cart-form .btn {
+    width: 100%;
+}
+
 @media (max-width: 900px) {
     .nav-container {
         flex-wrap: wrap;

@@ -24,6 +24,13 @@
                     <button type="button" class="btn btn-primary quick-view-btn" data-game-id="{{ game.id }}">
                         Быстрый просмотр
                     </button>
+
+                    {% if show_remove_from_cart %}
+                        <form method="post" action="{% url 'remove_from_cart' game.pk %}" class="remove-from-cart-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn danger">Удалить из корзины</button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </article>
