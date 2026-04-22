@@ -605,3 +605,139 @@ p {
 .auth-submit {
     width: 100%;
 }
+
+.nav-toggle {
+    display: none;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 999px;
+    background: white;
+}
+
+@media (max-width: 900px) {
+    .nav-container {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding-top: 14px;
+    }
+
+    .nav-links.is-open {
+        display: flex;
+    }
+
+    .nav-links a,
+    .nav-link-button,
+    .nav-user,
+    .logout-form {
+        width: 100%;
+    }
+
+    .nav-links a,
+    .nav-link-button {
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .logout-form {
+        display: flex;
+    }
+
+    .nav-user {
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .cart-link {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 1100px) {
+    .games-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    h1 {
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    main.container {
+        padding-top: 20px;
+        padding-bottom: 28px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .game-card-content {
+        padding: 16px;
+    }
+
+    .game-card-content h3 {
+        font-size: 20px;
+    }
+
+    .game-card-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}

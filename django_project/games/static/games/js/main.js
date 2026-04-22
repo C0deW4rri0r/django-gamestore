@@ -347,3 +347,21 @@ function initTiltCards() {
 }
 
 initTiltCards();
+
+//toggle navbar
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+
+if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('is-open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) {
+            navLinks.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+}

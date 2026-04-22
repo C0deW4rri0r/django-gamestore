@@ -2,7 +2,19 @@
     <div class="nav-container">
         <a href="{% url 'game_list' %}" class="logo">GameStore</a>
 
-        <div class="nav-links">
+        <button
+            type="button"
+            class="nav-toggle"
+            id="nav-toggle"
+            aria-expanded="false"
+            aria-controls="nav-links"
+            aria-label="Открыть меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-links" id="nav-links">
             <a href="{% url 'game_list' %}">Игры</a>
 
             <a href="{% url 'cart_detail' %}" id="cart-link" class="cart-link">
