@@ -152,6 +152,15 @@ function pulseCartCounter() {
     cartCounter.classList.add('cart-counter-pulse');
 }
 
+function popFlyTarget() {
+    const targetElement = getFlyTarget();
+    if (!targetElement) return;
+
+    targetElement.classList.remove('cart-link-pop');
+    void targetElement.offsetWidth;
+    targetElement.classList.add('cart-link-pop');
+}
+
 addToCartForms.forEach(form => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -180,6 +189,8 @@ addToCartForms.forEach(form => {
                     form.querySelector('.add-to-cart-btn');
 
                 await animateFlyToCart(sourceElement);
+
+                popFlyTarget();
 
                 if (cartCounter) {
                     cartCounter.textContent = data.cart_items_count;
@@ -278,18 +289,18 @@ function animateFlyToCart(sourceElement) {
         const p0 = { x: startX, y: startY };
         const p2 = { x: endX, y: endY };
 
-        const arcHeight = 120
-
-        const isMobile = window.innerWidth <= 640;
+        const isMobileLayout = window.innerWidth <= 640;
 
         let p1;
 
-        if (isMobile) {
+        if (isMobileLayout) {
             p1 = {
                 x: Math.min(window.innerWidth - 40, lerp(startX, endX, 0.7)),
                 y: lerp(startY, endY, 0.35)
             };
         } else {
+            const arcHeight = 120
+
             p1 = {
                 x: lerp(startX, endX, 0.5),
                 y: Math.min(startY, endY) - arcHeight
